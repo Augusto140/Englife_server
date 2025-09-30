@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Cadastros - Sistema de Monitoramento{% endblock %}
+{% block header %}Lista de Cadastros{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-table"></i> Todos os Cadastros</h5>
+            </div>
+            <div class="card-body">
+                <!-- Localizações -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h6><i class="fas fa-map-marker-alt"></i> Localizações ({{ localizacoes|length }})</h6>
+                    </div>
+                    <div class="card-body">
+                        {% if localizacoes %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Tipo</th>
+                                        <th>Descrição</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for loc in localizacoes %}
+                                    <tr>
+                                        <td>{{ loc[1] }}</td>
+                                        <td><span class="badge bg-secondary">{{ loc[2] }}</span></td>
+                                        <td>{{ loc[3] or '-' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Nenhuma localização cadastrada</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Dispositivos -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h6><i class="fas fa-microchip"></i> Dispositivos ({{ dispositivos|length }})</h6>
+                    </div>
+                    <div class="card-body">
+                        {% if dispositivos %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Tipo</th>
+                                        <th>MAC</th>
+                                        <th>Localização</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for disp in dispositivos %}
+                                    <tr>
+                                        <td>{{ disp[1] }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ 'success' if disp[2] == 'alimentador' else 'info' }}">
+                                                {{ disp[2] }}
+                                            </span>
+                                        </td>
+                                        <td><code>{{ disp[3] }}</code></td>
+                                        <td>{{ disp[4] or '-' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Nenhum dispositivo cadastrado</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Sensores -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h6><i class="fas fa-thermometer-half"></i> Sensores ({{ sensores|length }})</h6>
+                    </div>
+                    <div class="card-body">
+                        {% if sensores %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Tipo</th>
+                                        <th>Posição</th>
+                                        <th>Datalogger</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sensor in sensores %}
+                                    <tr>
+                                        <td>{{ sensor[1] }}</td>
+                                        <td><span class="badge bg-secondary">{{ sensor[2] }}</span></td>
+                                        <td>{{ sensor[3] }}</td>
+                                        <td>{{ sensor[4] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Nenhum sensor cadastrado</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Configurações de Alimentadores -->
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h6><i class="fas fa-utensils"></i> Configurações de Alimentadores ({{ configs_alimentadores|length }})</h6>
+                    </div>
+                    <div class="card-body">
+                        {% if configs_alimentadores %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Alimentador</th>
+                                        <th>Horário</th>
+                                        <th>Peso Diário</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for config in configs_alimentadores %}
+                                    <tr>
+                                        <td>{{ config[1] }}</td>
+                                        <td>{{ config[2].strftime('%H:%M') }} - {{ config[3].strftime('%H:%M') }}</td>
+                                        <td>{{ config[4] }}g</td>
+                                        <td>
+                                            <span class="badge bg-{{ 'success' if config[5] else 'secondary' }}">
+                                                {{ 'Ativa' if config[5] else 'Inativa' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Nenhuma configuração de alimentador cadastrada</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Limites de Temperatura -->
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h6><i class="fas fa-temperature-high"></i> Limites de Temperatura ({{ limites_temperatura|length }})</h6>
+                    </div>
+                    <div class="card-body">
+                        {% if limites_temperatura %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Localização</th>
+                                        <th>Tipo Sensor</th>
+                                        <th>Mínima</th>
+                                        <th>Máxima</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for limite in limites_temperatura %}
+                                    <tr>
+                                        <td>{{ limite[1] }}</td>
+                                        <td>{{ limite[2] }}</td>
+                                        <td>{{ "%.1f"|format(limite[3]) }}°C</td>
+                                        <td>{{ "%.1f"|format(limite[4]) }}°C</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Nenhum limite de temperatura cadastrado</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('cadastros') }}" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Voltar para Cadastros
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

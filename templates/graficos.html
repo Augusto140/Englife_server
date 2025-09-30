@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Gráficos - Sistema de Monitoramento{% endblock %}
+{% block header %}Gráficos de Temperatura{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% for graph_json in graphs %}
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div id="graph-{{ loop.index }}" style="height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not graphs %}
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> Nenhum dado disponível para exibir gráficos.
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% for graph_json in graphs %}
+    var graph{{ loop.index }} = {{ graph_json | safe }};
+    Plotly.newPlot('graph-{{ loop.index }}', graph{{ loop.index }}.data, graph{{ loop.index }}.layout);
+    {% endfor %}
+</script>
+{% endblock %}

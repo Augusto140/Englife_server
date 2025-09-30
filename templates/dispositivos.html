@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Dispositivos - Sistema de Monitoramento{% endblock %}
+{% block header %}Dispositivos{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5><i class="fas fa-list"></i> Todos os Dispositivos</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Localização</th>
+                        <th>MAC</th>
+                        <th>Status</th>
+                        <th>Última Comunicação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dispositivo in dispositivos %}
+                    <tr>
+                        <td>{{ dispositivo[1] }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if dispositivo[2] == 'alimentador' else 'info' }}">
+                                {{ dispositivo[2] }}
+                            </span>
+                        </td>
+                        <td>{{ dispositivo[7] or 'N/A' }}</td>
+                        <td><code>{{ dispositivo[3] }}</code></td>
+                        <td>
+                            <i class="fas fa-circle {{ 'status-online' if dispositivo[5] else 'status-offline' }}"></i>
+                            {{ 'Online' if dispositivo[5] else 'Offline' }}
+                        </td>
+                        <td>{{ dispositivo[6].strftime('%d/%m/%Y %H:%M') if dispositivo[6] else 'Nunca' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

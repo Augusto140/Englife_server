@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Sensor - Sistema de Monitoramento{% endblock %}
+{% block header %}Cadastrar Sensor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-thermometer-half"></i> Novo Sensor</h5>
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('salvar_sensor') }}">
+                    <div class="mb-3">
+                        <label for="datalogger_id" class="form-label">Datalogger *</label>
+                        <select class="form-select" id="datalogger_id" name="datalogger_id" required>
+                            <option value="">Selecione um datalogger...</option>
+                            {% for datalogger in dataloggers %}
+                            <option value="{{ datalogger[0] }}">{{ datalogger[1] }} ({{ datalogger[2] }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome do Sensor *</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tipo" class="form-label">Tipo *</label>
+                                <select class="form-select" id="tipo" name="tipo" required>
+                                    <option value="">Selecione o tipo...</option>
+                                    <option value="temperatura">Temperatura</option>
+                                    <option value="umidade">Umidade</option>
+                                    <option value="pressao">Pressão</option>
+                                    <option value="luminosidade">Luminosidade</option>
+                                    <option value="ph">pH</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="unidade" class="form-label">Unidade *</label>
+                                <input type="text" class="form-control" id="unidade" name="unidade" 
+                                       value="°C" required>
+                                <div class="form-text">Ex: °C, %, hPa, lux</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="posicao" class="form-label">Posição *</label>
+                                <select class="form-select" id="posicao" name="posicao" required>
+                                    <option value="">Selecione a posição...</option>
+                                    <option value="agua">Água</option>
+                                    <option value="estufa">Estufa</option>
+                                    <option value="externa">Externa</option>
+                                    <option value="solo">Solo</option>
+                                    <option value="ar">Ar</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereço/Identificação</label>
+                        <input type="text" class="form-control" id="endereco" name="endereco">
+                        <div class="form-text">Endereço físico ou identificação única do sensor</div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('cadastros') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar Sensor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

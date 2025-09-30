@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Erro - Sistema de Monitoramento{% endblock %}
+{% block header %}Erro{% endblock %}
+
+{% block content %}
+<div class="alert alert-danger">
+    <h4><i class="fas fa-exclamation-triangle"></i> Ocorreu um erro</h4>
+    <p>{{ message }}</p>
+</div>
+<div class="text-center">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Voltar ao Dashboard</a>
+</div>
+{% endblock %}

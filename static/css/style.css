@@ -1,0 +1,35 @@
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.status-online {
+    color: #198754;
+}
+
+.status-offline {
+    color: #dc3545;
+}
+
+.badge-online {
+    background-color: #198754;
+}
+
+.badge-offline {
+    background-color: #dc3545;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}

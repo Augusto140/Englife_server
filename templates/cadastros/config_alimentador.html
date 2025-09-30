@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Configurar Alimentador - Sistema de Monitoramento{% endblock %}
+{% block header %}Configurar Alimentador{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-utensils"></i> Configurar Alimentador</h5>
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('salvar_config_alimentador') }}">
+                    <div class="mb-3">
+                        <label for="alimentador_id" class="form-label">Alimentador *</label>
+                        <select class="form-select" id="alimentador_id" name="alimentador_id" required>
+                            <option value="">Selecione um alimentador...</option>
+                            {% for alimentador in alimentadores %}
+                            <option value="{{ alimentador[0] }}">{{ alimentador[1] }} ({{ alimentador[2] }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="horario_inicio" class="form-label">Horário Início *</label>
+                                <input type="time" class="form-control" id="horario_inicio" name="horario_inicio" 
+                                       value="08:00" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="horario_fim" class="form-label">Horário Fim *</label>
+                                <input type="time" class="form-control" id="horario_fim" name="horario_fim" 
+                                       value="18:00" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="intervalo" class="form-label">Intervalo (minutos) *</label>
+                                <input type="number" class="form-control" id="intervalo" name="intervalo" 
+                                       value="60" min="1" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="peso_diario" class="form-label">Peso Diário (g) *</label>
+                                <input type="number" class="form-control" id="peso_diario" name="peso_diario" 
+                                       value="1000" min="1" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="porcoes" class="form-label">Porções *</label>
+                                <input type="number" class="form-control" id="porcoes" name="porcoes" 
+                                       value="10" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="ativa" name="ativa">
+                            <label class="form-check-label" for="ativa">Configuração Ativa</label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('cadastros') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar Configuração</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

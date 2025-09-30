@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Sistema de Monitoramento{% endblock %}
+{% block header %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Estatísticas -->
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-microchip"></i> Dispositivos</h5>
+                <h2>{{ stats.total_dispositivos }}</h2>
+                <p>{{ stats.dispositivos_online }} online</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-utensils"></i> Alimentadores</h5>
+                <h2>{{ stats.total_alimentadores }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-database"></i> Dataloggers</h5>
+                <h2>{{ stats.total_dataloggers }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-map-marker-alt"></i> Localizações</h5>
+                <h2>{{ stats.total_localizacoes }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <!-- Últimas Leituras -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-thermometer-half"></i> Últimas Leituras</h5>
+            </div>
+            <div class="card-body">
+                {% if ultimas_leituras %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Localização</th>
+                                <th>Tipo</th>
+                                <th>Valor</th>
+                                <th>Horário</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leitura in ultimas_leituras %}
+                            <tr>
+                                <td>{{ leitura[0] }}</td>
+                                <td>{{ leitura[1] }}</td>
+                                <td>{{ "%.2f"|format(leitura[2]) }}°C</td>
+                                <td>{{ leitura[3].strftime('%H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">Nenhuma leitura recente</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertas Ativos -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-exclamation-triangle"></i> Alertas Ativos</h5>
+            </div>
+            <div class="card-body">
+                {% if alertas_ativos %}
+                {% for alerta in alertas_ativos %}
+                <div class="alert alert-{{ 'danger' if alerta[3] == 'ALTA' else 'warning' }} alert-dismissible fade show" role="alert">
+                    <strong>{{ alerta[0] }}</strong>: {{ alerta[1] }}
+                    <br><small>{{ alerta[2].strftime('%d/%m/%Y %H:%M') }}</small>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-muted">Nenhum alerta ativo</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

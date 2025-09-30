@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Limites de Temperatura - Sistema de Monitoramento{% endblock %}
+{% block header %}Limites de Temperatura{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-temperature-high"></i> Configurar Limites de Temperatura</h5>
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('salvar_limites_temperatura') }}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="localizacao_id" class="form-label">Localização *</label>
+                                <select class="form-select" id="localizacao_id" name="localizacao_id" required>
+                                    <option value="">Selecione uma localização...</option>
+                                    {% for loc in localizacoes %}
+                                    <option value="{{ loc[0] }}">{{ loc[1] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tipo_sensor" class="form-label">Tipo de Sensor *</label>
+                                <select class="form-select" id="tipo_sensor" name="tipo_sensor" required>
+                                    <option value="">Selecione o tipo...</option>
+                                    <option value="agua">Água</option>
+                                    <option value="estufa">Estufa</option>
+                                    <option value="externa">Externa</option>
+                                    <option value="solo">Solo</option>
+                                    <option value="ar">Ar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="minimo" class="form-label">Temperatura Mínima (°C) *</label>
+                                <input type="number" class="form-control" id="minimo" name="minimo" 
+                                       step="0.1" required>
+                                <div class="form-text">Temperatura mínima permitida</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="maximo" class="form-label">Temperatura Máxima (°C) *</label>
+                                <input type="number" class="form-control" id="maximo" name="maximo" 
+                                       step="0.1" required>
+                                <div class="form-text">Temperatura máxima permitida</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('cadastros') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar Limites</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
